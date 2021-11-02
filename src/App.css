@@ -1,0 +1,17 @@
+.header {
+  background-color: darksalmon;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  min-height: 10vh;
+  min-width: 100%;
+}
+
+.app {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

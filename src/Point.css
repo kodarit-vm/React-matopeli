@@ -1,0 +1,9 @@
+.point {
+  background-color: lemonchiffon;
+  font-weight: bold;
+  color: cadetblue;
+  border: 2px solid #432C75;
+  border-radius: 20px;
+  margin-top: 10px;
+  padding: 10px;
+}
