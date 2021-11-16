@@ -3,3 +3,23 @@
   font-size: large;
   font-weight: bold;
 }
+
+.Snake-board {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 30px;
+}
+
+.Snake-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.tile {
+  position: relative;
+  width: 10px;
+  height: 10px;
+}
