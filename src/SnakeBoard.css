@@ -23,3 +23,19 @@
   width: 10px;
   height: 10px;
 }
+
+.blank {
+  background: white
+}
+
+.snake {
+  background: olive;
+}
+
+.obstacle {
+  background: black;
+}
+
+.food {
+  background: white;
+}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./SnakeBoard.css";
+import { range } from './utils';
 
 const SnakeBoard = ({ points, setPoints }) => {
   const [ width, setWidth ] = useState(
@@ -22,7 +23,40 @@ const SnakeBoard = ({ points, setPoints }) => {
     return initialRows;
   }
 
+  const getObstacles = [
+    {
+      name: "tyhja",
+      location: []
+    },
+    {
+      name: "oma",
+      location: [{x: 6, y: 15}, {x: 1, y: 10}, {x: 5, y: 5}]
+    },
+    {
+      name: "keski",
+      location: range(width * 0.6).map(y => ({
+        x: Math.round(height / 2),
+        y: y + Math.ceil(width * 0.2)
+      }))
+    },
+    {
+      name: "reunat",
+      location: [
+        ...range(width).map(x => ({x, y: 0})),
+        ...range(width).map(x => ({x, y: width -1})),
+        ...range(height).map(y => ({x: 0, y})),
+        ...range(height).map(y => ({x: height -1, y}))
+      ]
+    }
+  ]
+
+  const randomObstacle = () => getObstacles[Math.floor(Math.random() * getObstacles.length)]
+
   const [ rows, setRows ] = useState(getInitialRows())
+  const [ snake, setSnake ] = useState([{x:1, y:1}])
+  const [ obstacle, setObstacle ] = useState(randomObstacle())
+
+  console.log('obstacle', obstacle);
 
   useEffect(() => {
     if (width >= 10 && width <= 100 && height >= 10 && height <= 100) {
@@ -38,16 +72,7 @@ const SnakeBoard = ({ points, setPoints }) => {
     </div>
   ))
 
-  const getObstacles = [
-    {
-      name: "tyhja",
-      location: []
-    },
-    {
-      name: "oma",
-      location: [{x: 6, y: 15}, {x: 1, y: 10}, {x: 5, y: 5}]
-    }
-  ]
+  
 
   console.log('rivit', rows);
   return (
