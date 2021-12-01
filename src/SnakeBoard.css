@@ -39,3 +39,9 @@
 .food {
   background: white;
 }
+
+.food:after {
+  position: absolute;
+  font-size: 10px;
+  content: "🍔";
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./SnakeBoard.css";
-import { range } from './utils';
+import { range, useInterval } from './utils';
 
 const SnakeBoard = ({ points, setPoints }) => {
   const [ width, setWidth ] = useState(
@@ -52,9 +52,23 @@ const SnakeBoard = ({ points, setPoints }) => {
 
   const randomObstacle = () => getObstacles[Math.floor(Math.random() * getObstacles.length)]
 
+  const randomPosition = () => {
+    const position = {
+      x: Math.floor(Math.random() * width),
+      y: Math.floor(Math.random() * height)
+    }
+    if (obstacle.location.some(({x, y}) => position.x === x && position.y === y)) {
+      return randomPosition();
+    }
+    return position;
+  }
+
   const [ rows, setRows ] = useState(getInitialRows())
   const [ snake, setSnake ] = useState([{x:1, y:1}])
   const [ obstacle, setObstacle ] = useState(randomObstacle())
+  const [ direction, setDirection ] = useState("right")
+  const [ food, setFood ] = useState(randomPosition())
+  const [ intervalId, setIntervalId ] = useState()
 
   console.log('obstacle', obstacle);
 
@@ -72,7 +86,38 @@ const SnakeBoard = ({ points, setPoints }) => {
     </div>
   ))
 
-  
+  const displaySnake = () => {
+    const newRows = getInitialRows();
+    snake.forEach(tile => {
+      newRows[tile.x][tile.y] = "snake"
+    })
+    newRows[food.x][food.y] = "food"
+    obstacle.location.forEach(tile => {
+      newRows[tile.x][tile.y] = "obstacle"
+    })
+    setRows(newRows)
+  }
+
+  const moveSnake = () => {
+    if (!startGame) return;
+    const newSnake = []
+
+
+    snake.forEach(tile => {
+      newSnake.push(tile)
+    })
+    const madonPaa = snake[0]
+    if (madonPaa.x === food.x && madonPaa.y === food.y) {
+      setFood(randomPosition)
+    } else {
+
+    }
+
+    setSnake(newSnake)
+    displaySnake();
+  }
+
+  useInterval(moveSnake, 150, setIntervalId)
 
   console.log('rivit', rows);
   return (
