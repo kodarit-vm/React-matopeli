@@ -44,4 +44,6 @@
   position: absolute;
   font-size: 10px;
   content: "🍔";
+  left: 0;
+  top: -4px;
 }

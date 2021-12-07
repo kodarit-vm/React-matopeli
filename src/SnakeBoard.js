@@ -70,8 +70,6 @@ const SnakeBoard = ({ points, setPoints }) => {
   const [ food, setFood ] = useState(randomPosition())
   const [ intervalId, setIntervalId ] = useState()
 
-  console.log('obstacle', obstacle);
-
   useEffect(() => {
     if (width >= 10 && width <= 100 && height >= 10 && height <= 100) {
       setRows(getInitialRows())
@@ -98,10 +96,59 @@ const SnakeBoard = ({ points, setPoints }) => {
     setRows(newRows)
   }
 
+  const changeDirection = (e) => {
+    const { key } = e
+    switch (key) {
+      case "ArrowLeft":
+        setDirection("left")
+        break;
+      case "ArrowUp":
+        setDirection("up")
+        break;
+      case "ArrowRight":
+        setDirection("right")
+        break;
+      case "ArrowDown":
+        setDirection("down")
+        break;
+      default:
+        break;
+    }
+  }
+  document.addEventListener("keydown", changeDirection)
+
+  const checkGameOver = () => {
+    const head = snake[0]
+    const body = snake.slice(1, -1)
+    const hitSnake = body.find(b => b.x === head.x && b.y === head.y)
+    const hitWall = obstacle.location.some(({x,y}) => head.x === x && head.y === y)
+    return hitSnake || hitWall
+  }
+
   const moveSnake = () => {
     if (!startGame) return;
     const newSnake = []
 
+    switch(direction) {
+      case "right":
+        newSnake.push({ x: snake[0].x, y: (snake[0].y + 1) % width })
+        break;
+      case "left":
+        newSnake.push({x: snake[0].x, y: (snake[0].y - 1 + width) % width })
+        break;
+      case "up":
+        newSnake.push({x: (snake[0].x -1 + height) % height, y: snake[0].y  })
+        break;
+      case "down":
+        newSnake.push({x: (snake[0].x + 1) % height, y: snake[0].y})
+        break;
+      default:
+        break;
+    }
+
+    if (checkGameOver()) {
+      clearInterval(intervalId)
+    }
 
     snake.forEach(tile => {
       newSnake.push(tile)
@@ -110,7 +157,7 @@ const SnakeBoard = ({ points, setPoints }) => {
     if (madonPaa.x === food.x && madonPaa.y === food.y) {
       setFood(randomPosition)
     } else {
-
+      newSnake.pop()
     }
 
     setSnake(newSnake)
@@ -118,8 +165,6 @@ const SnakeBoard = ({ points, setPoints }) => {
   }
 
   useInterval(moveSnake, 150, setIntervalId)
-
-  console.log('rivit', rows);
   return (
     <div className="Snake-board">
       {!startGame && (
@@ -131,7 +176,7 @@ const SnakeBoard = ({ points, setPoints }) => {
             type="number"
             onChange={e => {
               const size = parseInt(e.target.value);
-              console.log('size', size);
+
               if (size <= 100 && size >= 10) {
                 setWidth(size)
                 setHeight(size)
